@@ -82,16 +82,16 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
   const { id } = request.params;
   const { user } = request;
 
-  const task = user.todos.filter((task) => task.id === id);
+  const task = user.todos.find((task) => task.id === id);
 
-  if(!task.length) {
+  if(!task) {
     return response.status(404).json({error: "ID not found"}); 
   }
 
-  task[0].title = title;
-  task[0].deadline = new Date(deadline);
+  task.title = title;
+  task.deadline = new Date(deadline);
 
-  return response.json(task[0]);
+  return response.json(task);
 
 });
 
@@ -99,15 +99,15 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
   const { id } = request.params;
   const { user } = request;
 
-  const task = user.todos.filter((task) => task.id === id);
+  const task = user.todos.find((task) => task.id === id);
 
-  if(!task.length) {
+  if(!task) {
     return response.status(404).json({error: "Id not found"});
   }
 
-  task[0].done = true;
+  task.done = true;
 
-  return response.status(201).json(task[0]);
+  return response.status(201).json(task);
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
